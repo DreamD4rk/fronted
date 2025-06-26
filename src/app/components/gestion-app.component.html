@@ -45,6 +45,18 @@
 </div>
 </div>
 
+
+  <user
+  [users]="users"
+  [currentPage]="currentPage"
+  [totalPages]="totalPages"
+  (pageChange)="goToPage($event)"
+  (selectUser)="openFormModal($event)"
+  (deleteUser)="removeUser($event)">
+</user>
+
+
+
 @if (showAlert) {
   <!-- Toast flotante -->
   <div
@@ -84,43 +96,6 @@
     </div>
   </div>
 }
-
-
-<div class="relative flex flex-col w-full h-full overflow-auto text-gray-700 bg-white shadow-md rounded-lg">
-  <!-- Tabla -->
-    <user 
-    [users]="users"
-    (usernameEventEmitter)="removeUser($event)" 
-    (selectUserEventEmitter)="openFormModal($event)">
-  </user>
-
-  <!-- Paginación -->
-  <div class="flex justify-between items-center px-4 py-3">
-    <div class="text-sm text-slate-500">
-      Página {{ currentPage + 1 }} de {{ totalPages }}
-    </div>
-    <div class="flex space-x-1">
-      <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease"
-        [disabled]="currentPage === 0"
-        (click)="goToPage(currentPage - 1)">
-        Prev
-      </button>
-      @for (item of [].constructor(totalPages); track $index) {
-        <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease"
-        [class.font-bold]="$index === currentPage"
-        (click)="goToPage($index)">
-          {{ $index + 1 }}
-        </button>
-      }
-      <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease"
-        [disabled]="currentPage === totalPages - 1"
-        (click)="goToPage(currentPage + 1)">
-        Next
-      </button>
-    </div>
-  </div>
-</div>
-<br>
 
 <!-- Backdrop + Modal: por encima de todo -->
 @if (isFormModalOpen) {

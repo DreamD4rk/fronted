@@ -4,13 +4,12 @@ import { UserService } from '../services/user.service';
 import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { NavbarComponent } from "./navbar/navbar.component";
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'gestion-app',
   standalone: true,
-  imports: [UserComponent, UserFormComponent, NavbarComponent],
+  imports: [UserComponent, UserFormComponent, NavbarComponent, RouterOutlet, RouterModule],
   templateUrl: './gestion-app.component.html',
   styleUrl: './gestion-app.component.css'
 })
@@ -43,22 +42,23 @@ export class GestionAppComponent implements OnInit {
     }
 
   ngOnInit() {
-      //this.service.findAll().subscribe(users => this.users = users);
-      this.route.paramMap.subscribe((params) => {
-        const p = +(params.get('page') ?? '0');
-        console.log('Parámetro page =', p);
-        this.currentPage = p;
-        this.service.findAllPageable(p).subscribe((page) => {
-          this.users = page.content;
-          this.totalPages = page.totalPages;
-          console.log('Backend respondió página', p, 'de', this.totalPages);
-        });
-      });
-  }
+  this.route.paramMap.subscribe(p => {
+    const pgn = +(p.get('page') || '0');
+    this.currentPage = pgn;
+    this.service.findAllPageable(pgn).subscribe(page => {
+      this.users = page.content;
+      this.totalPages = page.totalPages;
+    });
+  });
+}
 
   /* Método de ayuda para navegar a otra página (puedes usarlo en el template) */
   goToPage(p: number) {
-  this.router.navigate(['/users/page', p]);
+  this.currentPage = p;
+  this.service.findAllPageable(p).subscribe(page => {
+    this.users      = page.content;
+    this.totalPages = page.totalPages;
+  });
 }
 
   /* Abre el modal para creación o edición */

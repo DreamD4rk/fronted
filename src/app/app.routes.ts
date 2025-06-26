@@ -1,21 +1,25 @@
 import { Routes } from '@angular/router';
-import { UserComponent } from './components/user/user.component';
-import { UserFormComponent } from './components/user-form/user-form.component';
 import { GestionAppComponent } from './components/gestion-app.component';
+import { AuthComponent } from './components/auth/auth.component';
+import { UserComponent } from './components/user/user.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'users/page/0',
-    },
-    {
-        path: 'users',
-        component: GestionAppComponent,
-    },
-    {
-        // Ejemplo: /users/page/0, /users/page/1, etc.
-        path: 'users/page/:page',
-        component: GestionAppComponent
-    }
+
+        {  
+            path: '', 
+            redirectTo: 'users/page/0', 
+            pathMatch: 'full' 
+        },
+        {
+            path: 'users', 
+            component: UserComponent
+        },
+        {
+            path: 'users/page/:page', 
+            component: UserComponent 
+        },
+        {
+            path: 'login',
+            component: AuthComponent
+        }
 ];
