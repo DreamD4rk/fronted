@@ -7,15 +7,15 @@ export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'users',
+        redirectTo: 'users/page/0',
     },
     {
         path: 'users',
-        component: UserComponent,
+        component: GestionAppComponent,
     },
     {
         // Ejemplo: /users/page/0, /users/page/1, etc.
-        path: 'users/page/1',
+        path: 'users/page/:page',
         component: GestionAppComponent
     }
 ];

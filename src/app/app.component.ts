@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { GestionAppComponent } from "./components/gestion-app.component";
 import { HttpClientModule } from '@angular/common/http';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [GestionAppComponent, HttpClientModule],
+  imports: [HttpClientModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

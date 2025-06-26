@@ -25,7 +25,6 @@ export class GestionAppComponent implements OnInit {
   // Objeto para almacenar toda la información de paginación del backend.
   currentPage = 0;
   totalPages = 0;
-  totalElements = 0;
 
   // Errores de validación del backend
   fieldErrors: Record<string, string> = {};
@@ -45,17 +44,22 @@ export class GestionAppComponent implements OnInit {
 
   ngOnInit() {
       //this.service.findAll().subscribe(users => this.users = users);
-      this.route.paramMap.subscribe(params => {
-        const page = +(params.get('page') || '0');
-                console.log(params);
-        this.service.findAllPageable(page).subscribe(pageable => this.users = pageable.content as User[]);
-      })
+      this.route.paramMap.subscribe((params) => {
+        const p = +(params.get('page') ?? '0');
+        console.log('Parámetro page =', p);
+        this.currentPage = p;
+        this.service.findAllPageable(p).subscribe((page) => {
+          this.users = page.content;
+          this.totalPages = page.totalPages;
+          console.log('Backend respondió página', p, 'de', this.totalPages);
+        });
+      });
   }
 
   /* Método de ayuda para navegar a otra página (puedes usarlo en el template) */
   goToPage(p: number) {
-    this.router.navigate(['page', p]);
-  }
+  this.router.navigate(['/users/page', p]);
+}
 
   /* Abre el modal para creación o edición */
   openFormModal(user?: User) {
